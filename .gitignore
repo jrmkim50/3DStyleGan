@@ -1,0 +1,11 @@
+__pycache__
+sbatch/*
+._*
+.DS_Store
+brains-11-7
+conda_en
+results
+figures
+trained_networks
+dnnlib
+dnnlibcxx
