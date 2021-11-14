@@ -53,14 +53,14 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         # Synthesis Network Params
         # G.resolution = 128
         G.fmap_min = 2
-        G.fmap_max = 8
+        G.fmap_max = 4
         G.base_size = [ 2, 2, 5 ]
 
         # Discriminator Params 
         D.architecture = 'resnet'        
         # D.resolution=128
         D.fmap_min = 2
-        D.fmap_max = 8
+        D.fmap_max = 4
         D.base_size = [ 2, 2, 5 ]
 
         train.data_dir = data_dir
@@ -96,7 +96,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     assert config_id in _valid_configs
     desc += '-' + config_id
 
-    G.fmap_base = D.fmap_base = 8 << 10
+    G.fmap_base = D.fmap_base = 2 << 10
     
     if gamma is not None:
         D_loss.gamma = gamma
