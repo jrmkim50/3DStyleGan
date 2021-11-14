@@ -221,6 +221,7 @@ class TFRecordExporter:
             # assert self.shape[ 1 ] == 160 and self.shape[ 2 ] == 192 and self.shape[ 3 ] == 224, "Error: Image dimension is fixed to 160x192x224"
 
             self.resolution_log2 = int(np.log2( self.shape[1] / base_size[ 0 ] * 4 ) )
+            print("add_image3d_base", self.shape, self.resolution_log2)
             # assert self.shape[0] == 1, "Image Channel is not 1"
             # assert self.shape[1] == self.shape[2], "Image Dimension Mismatch"
             # assert self.shape[2] == self.shape[3], "Image Dimension Mismatch"
@@ -603,6 +604,7 @@ def create_from_images3d(tfrecord_dir, image_dir, shuffle, base_size):
     print( base_size )
     print( "======================================" )
     ref_filename = image_filenames[ 0 ] 
+    print("create_from_images3d", ref_filename)
 
     data_ext = -1 # invalid extension
 
@@ -626,7 +628,7 @@ def create_from_images3d(tfrecord_dir, image_dir, shuffle, base_size):
 
     channels = img.shape[3] if img.ndim == 4 else 1
 
-    print( img.shape )
+    print( img.ndim, img.shape )
     print( channels )
 
     # if img.shape[1] != resolution:
