@@ -46,21 +46,21 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         G.architecture = 'orig'
         
         # Mapping Network Params
-        G.latent_size = 96
-        G.dlatent_size = 96
-        G.mapping_fmaps = 96
+        G.latent_size = 48
+        G.dlatent_size = 48
+        G.mapping_fmaps = 48
 
         # Synthesis Network Params
         # G.resolution = 128
-        G.fmap_min = 18
-        G.fmap_max = 18
+        G.fmap_min = 9
+        G.fmap_max = 9
         G.base_size = [ 2, 2, 5 ]
 
         # Discriminator Params 
         D.architecture = 'resnet'        
         # D.resolution=128
-        D.fmap_min = 18
-        D.fmap_max = 18
+        D.fmap_min = 9
+        D.fmap_max = 9
         D.base_size = [ 2, 2, 5 ]
 
         train.data_dir = data_dir
