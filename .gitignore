@@ -7,5 +7,5 @@ conda_en
 results
 figures
 trained_networks
-dnnlib
+# dnnlib
 dnnlibcxx
