@@ -183,10 +183,10 @@ def training_loop(
     # Setup training inputs.
     print('Building TensorFlow graph...')
     with tf.name_scope('Inputs'), tf.device('/cpu:0'):
-        lod_in               = tf.compat.v1.placeholder(tf.float32, name='lod_in', shape=[])
-        lrate_in             = tf.compat.v1.placeholder(tf.float32, name='lrate_in', shape=[])
-        minibatch_size_in    = tf.compat.v1.placeholder(tf.int32, name='minibatch_size_in', shape=[])
-        minibatch_gpu_in     = tf.compat.v1.placeholder(tf.int32, name='minibatch_gpu_in', shape=[])
+        lod_in               = tf.placeholder(tf.float32, name='lod_in', shape=[])
+        lrate_in             = tf.placeholder(tf.float32, name='lrate_in', shape=[])
+        minibatch_size_in    = tf.placeholder(tf.int32, name='minibatch_size_in', shape=[])
+        minibatch_gpu_in     = tf.placeholder(tf.int32, name='minibatch_gpu_in', shape=[])
         minibatch_multiplier = minibatch_size_in // (minibatch_gpu_in * num_gpus)
         Gs_beta              = 0.5 ** tf.div(tf.cast(minibatch_size_in, tf.float32), G_smoothing_kimg * 1000.0) if G_smoothing_kimg > 0.0 else 0.0
 

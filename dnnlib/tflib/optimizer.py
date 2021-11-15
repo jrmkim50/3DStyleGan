@@ -56,7 +56,7 @@ class Optimizer:
         self.learning_rate          = learning_rate
         self.minibatch_multiplier   = minibatch_multiplier
         self.id                     = self.name.replace("/", ".")
-        self.scope                  = tf.compat.v1.get_default_graph().unique_name(self.id)
+        self.scope                  = tf.get_default_graph().unique_name(self.id)
         self.optimizer_class        = util.get_obj_by_name(tf_optimizer)
         self.optimizer_kwargs       = dict(kwargs)
         self.use_loss_scaling       = use_loss_scaling
@@ -169,7 +169,7 @@ class Optimizer:
             # print( " apply_loss_scaling" )
             # print( "===============================================================" )
             loss = self.apply_loss_scaling(tf.cast(loss, tf.float32))
-            gate = tf.compat.v1.train.Optimizer.GATE_NONE  # disable gating to reduce memory usage
+            gate = tf.train.Optimizer.GATE_NONE  # disable gating to reduce memory usage
             # print( "===============================================================" )
             # print( " compute_gradients" )
             # print( "loss" )
@@ -448,14 +448,14 @@ class SimpleAdam:
     def variables(self):
         return self.all_state_vars
 
-    def compute_gradients(self, loss, var_list, gate_gradients=tf.compat.v1.train.Optimizer.GATE_NONE):
+    def compute_gradients(self, loss, var_list, gate_gradients=tf.train.Optimizer.GATE_NONE):
 
         # print( "===============================================================" )
         # print( "SimpleAdam  compute_gradients  " )
         # print( self.name )
         # print( "===============================================================" )
 
-        assert gate_gradients == tf.compat.v1.train.Optimizer.GATE_NONE
+        assert gate_gradients == tf.train.Optimizer.GATE_NONE
         return list(zip(tf.gradients(loss, var_list), var_list))
 
     def apply_gradients(self, grads_and_vars):
