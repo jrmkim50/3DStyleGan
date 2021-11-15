@@ -96,7 +96,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     assert config_id in _valid_configs
     desc += '-' + config_id
 
-    G.fmap_base = D.fmap_base = 2 << 10
+    G.fmap_base = D.fmap_base = 2 << 4
     
     if gamma is not None:
         D_loss.gamma = gamma
