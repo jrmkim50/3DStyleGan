@@ -46,21 +46,21 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         G.architecture = 'orig'
         
         # Mapping Network Params
-        G.latent_size = 5
-        G.dlatent_size = 5
-        G.mapping_fmaps = 5
+        G.latent_size = 96
+        G.dlatent_size = 96
+        G.mapping_fmaps = 96
 
         # Synthesis Network Params
         # G.resolution = 128
-        G.fmap_min = 2
-        G.fmap_max = 4
+        G.fmap_min = 48
+        G.fmap_max = 48
         G.base_size = [ 2, 2, 5 ]
 
         # Discriminator Params 
         D.architecture = 'resnet'        
         # D.resolution=128
-        D.fmap_min = 2
-        D.fmap_max = 4
+        D.fmap_min = 48
+        D.fmap_max = 48
         D.base_size = [ 2, 2, 5 ]
 
         train.data_dir = data_dir
@@ -71,12 +71,18 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
 
-        sched.minibatch_gpu_base = 2
-        # sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 2, 64: 2, 128:2}
+        # sched.minibatch_gpu_base = 2
+        sched.minibatch_gpu_dict = {8: 16, 16: 8, 32: 4, 64: 4, 128:2}
         # sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 4, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        # sched.minibatch_size_dict = {8: sched.minibatch_gpu_dict[ 8 ] * num_gpus , 16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus, 128: sched.minibatch_gpu_dict[ 128 ] * num_gpus}
+        sched.minibatch_size_dict = { 
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus , 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus, 
+            128: sched.minibatch_gpu_dict[ 128 ] * num_gpus
+        }
         # sched.minibatch_size_dict = {8: 32, 16: 32, 32: 16, 64: 16}
     else:
         print( "Unknown Config" )
@@ -96,7 +102,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     assert config_id in _valid_configs
     desc += '-' + config_id
 
-    G.fmap_base = D.fmap_base = 2 << 4
+    G.fmap_base = D.fmap_base = 8 << 10
     
     if gamma is not None:
         D_loss.gamma = gamma
