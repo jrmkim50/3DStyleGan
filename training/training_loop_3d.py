@@ -333,7 +333,7 @@ def training_loop(
         feed_dict = {lod_in: sched.lod, lrate_in: sched.G_lrate, minibatch_size_in: sched.minibatch_size, minibatch_gpu_in: sched.minibatch_gpu}
         for _repeat in range(minibatch_repeats):
             rounds = range(0, sched.minibatch_size, sched.minibatch_gpu * num_gpus)
-
+            print("line 336: ", minibatch_repeats, rounds, cur_nimg)
             run_G_reg = (lazy_regularization and running_mb_counter % G_reg_interval == 0)
             run_D_reg = (lazy_regularization and running_mb_counter % D_reg_interval == 0)
             
@@ -421,6 +421,7 @@ def training_loop(
         done = (cur_nimg >= total_kimg * 1000)
 
         if cur_tick < 0 or cur_nimg >= tick_start_nimg + sched.tick_kimg * 1000 or done:
+            print("line 424: ", cur_tick, cur_nimg, tick_start_nimg, sched.tick_kimg)
             cur_tick += 1
             tick_kimg = (cur_nimg - tick_start_nimg) / 1000.0
             tick_start_nimg = cur_nimg
