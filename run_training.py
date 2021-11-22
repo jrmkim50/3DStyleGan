@@ -46,8 +46,8 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         G.architecture = 'orig'
         
         # Mapping Network Params
-        G.latent_size = 96
-        G.dlatent_size = 96
+        G.latent_size = 24
+        G.dlatent_size = 24
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
