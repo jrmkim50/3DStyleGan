@@ -72,16 +72,17 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         sched.G_lrate_base = sched.D_lrate_base = 0.002
 
         sched.minibatch_gpu_base = 8
-        sched.minibatch_gpu_dict = {8: 8, 16: 4, 32: 4, 64: 2, 128: 2}
+        sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 8} #, 64: 2, 128: 2}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
         sched.minibatch_size_dict = { 
             8: sched.minibatch_gpu_dict[ 8 ] * num_gpus , 
             16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
             32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus, 
-            128: sched.minibatch_gpu_dict[ 128 ] * num_gpus
         }
+        #     64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus, 
+        #     128: sched.minibatch_gpu_dict[ 128 ] * num_gpus
+        # }
     else:
         print( "Unknown Config" )
         return
