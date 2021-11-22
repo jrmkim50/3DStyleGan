@@ -94,7 +94,7 @@ def training_schedule(
 
     # Minibatch size.
     s.minibatch_size = minibatch_size_dict.get(s.resolution, minibatch_size_base)
-    print("===================== LOG ==============", s.resolution, minibatch_size_base, s.minibatch_size)
+    print("===================== LOG =====================", s.resolution, minibatch_size_base, s.minibatch_size)
     s.minibatch_gpu = minibatch_gpu_dict.get(s.resolution, minibatch_gpu_base)
 
     # Learning rate.
