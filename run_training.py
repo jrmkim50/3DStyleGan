@@ -52,15 +52,15 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         # Synthesis Network Params
         # G.resolution = 128
-        G.fmap_min = 18
-        G.fmap_max = 18
+        G.fmap_min = 48
+        G.fmap_max = 48
         G.base_size = [ 2, 2, 5 ]
 
         # Discriminator Params 
         D.architecture = 'resnet'        
         # D.resolution=128
-        D.fmap_min = 18
-        D.fmap_max = 18
+        D.fmap_min = 48
+        D.fmap_max = 48
         D.base_size = [ 2, 2, 5 ]
 
         train.data_dir = data_dir
@@ -71,7 +71,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
 
-        sched.minibatch_gpu_base = 4
+        sched.minibatch_gpu_base = 12
         sched.minibatch_gpu_dict = {}
         # sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 8, 64: 2, 128: 2}
 
