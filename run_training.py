@@ -71,7 +71,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
 
-        sched.minibatch_gpu_base = 12
+        sched.minibatch_gpu_base = 8
         sched.minibatch_gpu_dict = {}
         # sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 8, 64: 2, 128: 2}
 
