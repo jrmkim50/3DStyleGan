@@ -420,8 +420,8 @@ def training_loop(
         # Perform maintenance tasks once per tick.
         done = (cur_nimg >= total_kimg * 1000)
 
+        print("line 423: ", cur_tick, cur_nimg, tick_start_nimg, sched.tick_kimg, total_kimg)
         if cur_tick < 0 or cur_nimg >= tick_start_nimg + sched.tick_kimg * 1000 or done:
-            print("line 424: ", cur_tick, cur_nimg, tick_start_nimg, sched.tick_kimg)
             cur_tick += 1
             tick_kimg = (cur_nimg - tick_start_nimg) / 1000.0
             tick_start_nimg = cur_nimg
