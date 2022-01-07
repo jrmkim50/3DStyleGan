@@ -220,7 +220,7 @@ class TFRecordExporter:
             assert self.shape[ 0 ] == 1, "Image Channel is not 1"
             # assert self.shape[ 1 ] == 160 and self.shape[ 2 ] == 192 and self.shape[ 3 ] == 224, "Error: Image dimension is fixed to 160x192x224"
 
-            self.resolution_log2 = int(np.log2( self.shape[1] / base_size[ 0 ] * 4 ) )
+            self.resolution_log2 = int(np.log2( self.shape[1] / base_size[ 0 ] * 4 ) ) # 7
             print("add_image3d_base", self.shape, self.resolution_log2)
             # assert self.shape[0] == 1, "Image Channel is not 1"
             # assert self.shape[1] == self.shape[2], "Image Dimension Mismatch"
@@ -228,14 +228,15 @@ class TFRecordExporter:
             # assert self.shape[1] == 2**self.resolution_log2, "Image Dimension must be the order of 2"
 
             tfr_opt = tf.io.TFRecordOptions(tf.compat.v1.io.TFRecordCompressionType.NONE)
-            for lod in range(self.resolution_log2 - 1):
+            for lod in range(self.resolution_log2 - 1): # 0 -> 5
                 tfr_file = self.tfr_prefix + '-r%02d.tfrecords' % (self.resolution_log2 - lod)
+                # tfr_file index goes from 7 -> 2
                 self.tfr_writers.append(tf.io.TFRecordWriter(tfr_file, tfr_opt))
         assert img.shape == self.shape
 
         for lod, tfr_writer in enumerate(self.tfr_writers):
             if lod:
-                img = img.astype(np.float32)
+                img = img.astype(np.float32) # downsample image 5 times from 64,64,160 -> 2,2,5
                 img = (img[:, 0::2, 0::2, 0::2] + img[:, 0::2, 0::2, 1::2] + img[:, 0::2, 1::2, 0::2] + img[:, 0::2, 1::2, 1::2] + img[:, 1::2, 0::2, 0::2] + img[:, 1::2, 0::2, 1::2] + img[:, 1::2, 1::2, 0::2] + img[:, 1::2, 1::2, 1::2] ) * 0.125
 
             print( "===================================================================" )
@@ -846,7 +847,7 @@ def extract_brecahad_crops(brecahad_dir, output_dir, cropsize=256):
 #----------------------------------------------------------------------------
 
 def execute_cmdline(argv):
-    prog = argv[0]
+    prog = argv[0] # python3
     parser = argparse.ArgumentParser(
         prog        = prog,
         description = 'Tool for creating multi-resolution TFRecords datasets for StyleGAN and ProGAN.',
