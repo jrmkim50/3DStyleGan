@@ -82,9 +82,9 @@ class TFRecordDataset:
                 self.label_file = guess
 
         # Determine shape and resolution.
-        max_shape = max(tfr_shapes, key=np.prod)
+        max_shape = max(tfr_shapes, key=np.prod) # (1, 64, 64, 160)
 
-        max_res = np.max( max_shape[ 1: ] )
+        max_res = np.max( max_shape[ 1: ] ) # 160
 
         if max_res == 224:
             max_res = max_res / 7 * 4
