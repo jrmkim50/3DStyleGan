@@ -30,17 +30,18 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
     if config_id == 'Mice':
-        train   = EasyDict(run_func_name='training.training_loop_3d.training_loop') # Options for training loop.
+        train   = EasyDict(run_func_name='training.training_loop_3d.training_loop') # Select training loop function
 
-        G       = EasyDict(func_name='training.networks3d_stylegan2.G_main')
-        D       = EasyDict(func_name='training.networks3d_stylegan2.D_stylegan2_3d_curated_real')
+        G       = EasyDict(func_name='training.networks3d_stylegan2.G_main') # Select generator arch
+        D       = EasyDict(func_name='training.networks3d_stylegan2.D_stylegan2_3d_curated_real') # Select discriminator arch
 
-        G_loss  = EasyDict(func_name='training.loss.G_logistic_ns_pathreg')
-        D_loss  = EasyDict(func_name='training.loss.D_logistic')
+        G_loss  = EasyDict(func_name='training.loss.G_logistic_ns_pathreg') # Select generator loss
+        D_loss  = EasyDict(func_name='training.loss.D_logistic') # Select discriminator loss
 
 
-        dataset_args = EasyDict(tfrecord_dir=dataset)
-        dataset_args.base_size = [ 2, 2, 5 ] 
+        dataset_args = EasyDict(tfrecord_dir=dataset) # Set tfrecord_dir
+        dataset_args.base_size = [ 2, 2, 5 ] # Base size is 2,2,5
+        # Images go from 2,2,5 -> 4,4,10 -> 8,8,20 -> 16,16,40 -> 32,32,80 -> 64,64,160
 
         # Generator Params 
         G.architecture = 'orig'
@@ -126,6 +127,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     kwargs.submit_config = copy.deepcopy(sc)
     kwargs.submit_config.run_dir_root = result_dir
     kwargs.submit_config.run_desc = desc
+    print(kwargs)
 
     dnnlib.submit_run(**kwargs)
 
@@ -182,7 +184,9 @@ def main():
 
     args = parser.parse_args()
 
-    if not os.path.exists(args.data_dir):
+    print(args)
+
+    if not os.path.exists(args.data_dir): # root directory of dataset
         print ('Error: dataset root directory does not exist.')
         sys.exit(1)
 

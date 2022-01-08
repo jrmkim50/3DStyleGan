@@ -124,7 +124,7 @@ def training_loop(
     grid_args               = {},       # Options for train.setup_snapshot_image_grid().
     metric_arg_list         = [],       # Options for MetricGroup.
     tf_config               = {},       # Options for tflib.init_tf().
-    data_dir                = None,     # Directory to load datasets from.
+    data_dir                = None,     # Directory to load datasets from. *** EVERYTHING AFTER THIS ARG IS SET TO DEFAULT VALUES! ***
     G_smoothing_kimg        = 10.0,     # Half-life of the running average of generator weights.
     minibatch_repeats       = 2,        # Number of minibatches to run before adjusting training parameters.
     lazy_regularization     = False,     # Perform regularization as a separate training step?

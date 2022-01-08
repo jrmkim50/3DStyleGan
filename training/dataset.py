@@ -294,6 +294,7 @@ def load_3d_dataset(class_name=None, data_dir=None, verbose=True, **kwargs):
             kwargs['tfrecord_dir'] = os.path.join(data_dir, kwargs['tfrecord_dir'])
 
     assert class_name is not None
+    print("class_name: ", class_name)
     if verbose:
         print('Streaming data using %s...' % class_name)
     dataset = dnnlib.util.get_obj_by_name(class_name)(**kwargs)
