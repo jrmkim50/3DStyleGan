@@ -65,7 +65,8 @@ def generate_images(network_pkl, seeds, truncation_psi):
     w_avg = Gs.get_var('dlatent_avg') # [component]
 
     Gs_syn_kwargs = dnnlib.EasyDict()
-    Gs_syn_kwargs.output_transform = dict(func=tflib.convert_3d_images_to_uint8, nchwd_to_nhwdc=True)
+    # Gs_syn_kwargs.output_transform = dict(func=tflib.convert_3d_images_to_uint8, nchwd_to_nhwdc=True)
+    Gs_syn_kwargs.output_transform = dict(nchwd_to_nhwdc=True)
     Gs_syn_kwargs.randomize_noise = True
     Gs_syn_kwargs.minibatch_size = 1
 
@@ -92,9 +93,9 @@ def generate_images(network_pkl, seeds, truncation_psi):
 
         nib.save( img, dnnlib.make_run_dir_path('seed%04d.nii.gz' % seed) )
 
-        PIL.Image.fromarray(images[0, images.shape[1]//2, :, :, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_x.png' % seed))
-        PIL.Image.fromarray(images[0, :, images.shape[2]//2, :, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_y.png' % seed))
-        PIL.Image.fromarray(images[0, :, :, images.shape[3]//2, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_z.png' % seed))
+        # PIL.Image.fromarray(images[0, images.shape[1]//2, :, :, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_x.png' % seed))
+        # PIL.Image.fromarray(images[0, :, images.shape[2]//2, :, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_y.png' % seed))
+        # PIL.Image.fromarray(images[0, :, :, images.shape[3]//2, 0 ], 'L').save(dnnlib.make_run_dir_path('seed%04d_z.png' % seed))
 
 #----------------------------------------------------------------------------
 
