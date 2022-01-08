@@ -319,4 +319,5 @@ def convert_3d_images_to_uint8(images, drange=[-1,1], nchwd_to_nhwdc=False, shri
         images = tf.transpose(images, [0, 2, 3, 4, 1])
     # scale = 255 / (drange[1] - drange[0])
     # images = ( images - drange[ 0 ] ) * scale + 0.5
-    return tf.saturate_cast(images, tf.uint8)
+    # return tf.saturate_cast(images, tf.uint8)
+    return images
