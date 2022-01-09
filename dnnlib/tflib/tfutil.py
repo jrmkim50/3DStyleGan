@@ -307,6 +307,7 @@ def convert_3d_images_from_uint8(images, drange=[-1,1], nhwdc_to_nchwd=False):
     return images * ((drange[1] - drange[0]) / 255) + drange[0]
 
 
+# TODO: Right now, this function doesn't actually convert to uint8
 def convert_3d_images_to_uint8(images, drange=[-1,1], nchwd_to_nhwdc=False, shrink=1):
     """Convert a minibatch of images from float32 to uint8 with configurable dynamic range.
     Can be used as an output transformation for Network.run().
