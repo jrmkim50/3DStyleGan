@@ -80,6 +80,7 @@ def training_schedule(
     phase_dur = lod_training_kimg + lod_transition_kimg
     phase_idx = int(np.floor(s.kimg / phase_dur)) if phase_dur > 0 else 0
     phase_kimg = s.kimg - phase_idx * phase_dur
+    print("================= LOG 83 ===============", phase_dur, phase_kimg)
 
     # Level-of-detail and resolution.
     if lod_initial_resolution is None:
@@ -176,7 +177,6 @@ def training_loop(
     # Print layers and generate initial image snapshot.
     G.print_layers(); D.print_layers()
     sched = training_schedule(cur_nimg=total_kimg*1000, training_set=training_set, **sched_args)
-    pdb.set_trace()
     grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
 
     grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
