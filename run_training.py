@@ -1,3 +1,6 @@
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+
 # Please see the license information of the original StyleGAN2 in https://nvlabs.github.io/stylegan2/license.html
 import argparse
 import copy

@@ -52,6 +52,7 @@ def process_reals(x, labels, lod, mirror_augment, drange_data, drange_net):
 
 #----------------------------------------------------------------------------
 # Evaluate time-varying training parameters.
+import pdb
 
 def training_schedule(
     cur_nimg,
@@ -225,6 +226,7 @@ def training_loop(
                 reals_var = tf.Variable(name='reals', trainable=False, initial_value=tf.cast( tf.zeros([sched.minibatch_gpu] + training_set.shape), tf.float32 ), dtype=tf.float32)
                 labels_var = tf.Variable(name='labels', trainable=False, initial_value=tf.zeros([sched.minibatch_gpu, training_set.label_size]))
                 reals_write, labels_write = training_set.get_minibatch_tf()
+                pdb.set_trace()
                 reals_write, labels_write = process_reals(reals_write, labels_write, lod_in, mirror_augment, training_set.dynamic_range, drange_net)
                 
                 reals_write = tf.concat([reals_write, reals_var[minibatch_gpu_in:]], axis=0)
