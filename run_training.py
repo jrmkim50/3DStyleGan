@@ -166,8 +166,6 @@ valid metrics:
 '''
 
 def main():
-    import pdb
-    pdb.set_trace()
     parser = argparse.ArgumentParser(
         description='Train StyleGAN2.',
         epilog=_examples,
