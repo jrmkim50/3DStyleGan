@@ -58,8 +58,8 @@ def training_schedule(
     cur_nimg,
     training_set,
     lod_initial_resolution  = None,     # Image resolution used at the beginning.
-    lod_training_kimg       = 1,      # Thousands of real images to show before doubling the resolution.
-    lod_transition_kimg     = 1,      # Thousands of real images to show when fading in new layers.
+    lod_training_kimg       = 1/500,      # Thousands of real images to show before doubling the resolution.
+    lod_transition_kimg     = 1/500,      # Thousands of real images to show when fading in new layers.
     minibatch_size_base     = 8,       # Global minibatch size.
     minibatch_size_dict     = {},       # Resolution-specific overrides.
     minibatch_gpu_base      = 2,        # Number of samples processed at a time by one GPU.
@@ -226,7 +226,6 @@ def training_loop(
                 reals_var = tf.Variable(name='reals', trainable=False, initial_value=tf.cast( tf.zeros([sched.minibatch_gpu] + training_set.shape), tf.float32 ), dtype=tf.float32)
                 labels_var = tf.Variable(name='labels', trainable=False, initial_value=tf.zeros([sched.minibatch_gpu, training_set.label_size]))
                 reals_write, labels_write = training_set.get_minibatch_tf()
-                pdb.set_trace()
                 reals_write, labels_write = process_reals(reals_write, labels_write, lod_in, mirror_augment, training_set.dynamic_range, drange_net)
                 
                 reals_write = tf.concat([reals_write, reals_var[minibatch_gpu_in:]], axis=0)
@@ -335,7 +334,6 @@ def training_loop(
         feed_dict = {lod_in: sched.lod, lrate_in: sched.G_lrate, minibatch_size_in: sched.minibatch_size, minibatch_gpu_in: sched.minibatch_gpu}
         for _repeat in range(minibatch_repeats):
             rounds = range(0, sched.minibatch_size, sched.minibatch_gpu * num_gpus)
-            print("line 336: ", minibatch_repeats, rounds, cur_nimg)
             run_G_reg = (lazy_regularization and running_mb_counter % G_reg_interval == 0)
             run_D_reg = (lazy_regularization and running_mb_counter % D_reg_interval == 0)
             
@@ -361,6 +359,7 @@ def training_loop(
                 print( "Fast Path run G_train_op" )
                 print( "=========================================" )
                 tflib.run([G_train_op, data_fetch_op], feed_dict)
+                pdb.set_trace()
                 
                 if run_G_reg:
                     print( "=========================================" )
