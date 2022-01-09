@@ -80,7 +80,6 @@ def training_schedule(
     phase_dur = lod_training_kimg + lod_transition_kimg
     phase_idx = int(np.floor(s.kimg / phase_dur)) if phase_dur > 0 else 0
     phase_kimg = s.kimg - phase_idx * phase_dur
-    print("================= LOG 83 ===============", phase_dur, phase_kimg)
 
     # Level-of-detail and resolution.
     if lod_initial_resolution is None:
@@ -96,7 +95,14 @@ def training_schedule(
 
     # Minibatch size.
     s.minibatch_size = minibatch_size_dict.get(s.resolution, minibatch_size_base)
-    print("===================== LOG =====================", s.resolution, minibatch_size_base, s.minibatch_size)
+    print("===================== LOG =====================", 
+          lod_initial_resolution, 
+          s.kimg,
+          phase_dur,
+          phase_idx,
+          s.resolution, 
+          minibatch_size_base, 
+          s.minibatch_size)
     s.minibatch_gpu = minibatch_gpu_dict.get(s.resolution, minibatch_gpu_base)
 
     # Learning rate.
@@ -322,6 +328,7 @@ def training_loop(
         sched = training_schedule(cur_nimg=cur_nimg, training_set=training_set, **sched_args)
         assert sched.minibatch_size % (sched.minibatch_gpu * num_gpus) == 0
 
+        print("=================== LOG 324 =================", sched.lod)
         training_set.configure(sched.minibatch_gpu, sched.lod)
         if reset_opt_for_new_lod:
             if np.floor(sched.lod) != np.floor(prev_lod) or np.ceil(sched.lod) != np.ceil(prev_lod):
