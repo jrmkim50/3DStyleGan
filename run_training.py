@@ -1,5 +1,5 @@
 import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
+warnings.filterwarnings("ignore", message=r"Passing", category=FutureWarning)
 
 # Please see the license information of the original StyleGAN2 in https://nvlabs.github.io/stylegan2/license.html
 import argparse
