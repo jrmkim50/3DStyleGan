@@ -344,6 +344,7 @@ def G_synthesis_stylegan2_3d_curated_real(
     print( "base_size" )
     print( base_size )
     print( "=================================")
+    print( "================ gen_resolution 347 ================", resolution )
 
     resolution_pow2 = int( resolution / np.min( base_size ) * 4 )
 
@@ -475,7 +476,7 @@ def D_stylegan2_3d_curated_real(
     print( fmap_max )
     print( "base_size" )
     print( base_size )
-    print( "================ images_in ================", images_in, resolution )
+    print( "================ disc_images_in 478 ================", tf.shape(images_in), resolution )
     print( "=================================")
 
     # input resolution = 160 - min resolution of 160 x 192 x 224
