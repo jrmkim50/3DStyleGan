@@ -366,7 +366,8 @@ def training_loop(
                 print( "=========================================" )
                 print( "Fast Path run G_train_op" )
                 print( "=========================================" )
-                tflib.run([G_train_op, data_fetch_op], feed_dict)
+                pdb.set_trace()
+                v = tflib.run([G_train_op, data_fetch_op], feed_dict)
                 
                 if run_G_reg:
                     print( "=========================================" )
