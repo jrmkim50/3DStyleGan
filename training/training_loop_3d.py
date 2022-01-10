@@ -161,8 +161,8 @@ def training_loop(
     training_set = dataset.load_3d_dataset(data_dir=dnnlib.convert_path(data_dir), verbose=True, **dataset_args)
     # training_set = training_set.repeat()
 
-    # grid_size, grid_reals, grid_labels = misc.setup_snapshot_image_grid(training_set, **grid_args)
-    # misc.save_image_grid(grid_reals, dnnlib.make_run_dir_path('reals.png'), drange=training_set.dynamic_range, grid_size=grid_size)
+    grid_size, grid_reals, grid_labels = misc.setup_snapshot_image_grid(training_set, **grid_args)
+    misc.save_image_grid(grid_reals, dnnlib.make_run_dir_path('reals.png'), drange=training_set.dynamic_range, grid_size=grid_size)
 
     min_res = np.min( training_set.shape[ 1: ] )
 
@@ -184,8 +184,8 @@ def training_loop(
     # Print layers and generate initial image snapshot.
     G.print_layers(); D.print_layers()
     sched = training_schedule(cur_nimg=total_kimg*1000, training_set=training_set, **sched_args)
-    # grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
-    # grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
+    grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
+    grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
 
     # misc.save_3d_image_grid(grid_fakes, dnnlib.make_run_dir_path('fakes_init.png'), drange=drange_net, grid_size=grid_size)
 
