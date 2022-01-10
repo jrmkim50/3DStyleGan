@@ -261,7 +261,6 @@ class TFRecordDataset:
         data = ex.features.feature['data'].bytes_list.value[0] # pylint: disable=no-member
         data = np.fromstring( data, np.float32 ) 
         data = data.astype( dtypeGlob_np )
-        print(shape, data.shape)
 
         return data.reshape(shape)
 

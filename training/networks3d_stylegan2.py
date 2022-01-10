@@ -155,7 +155,6 @@ def minibatch_stddev_layer(x, group_size=4, num_new_features=1):
 # Main generator network.
 # Composed of two sub-networks (mapping and synthesis) that are defined below.
 # Used in configs B-F (Table 1).
-import pdb
 def G_main(
     latents_in,                                         # First input: Latent vectors (Z) [minibatch, latent_size].
     labels_in,                                          # Second input: Conditioning labels [minibatch, label_size].
@@ -175,7 +174,6 @@ def G_main(
     synthesis_func          = 'G_synthesis_stylegan2_3d_curated_real',  # Build func name for the synthesis network.
     **kwargs):                                          # Arguments for sub-networks (mapping and synthesis).
 
-    pdb.set_trace()
     # Validate arguments.
     assert not is_training or not is_validation
     assert isinstance(components, dnnlib.EasyDict)
@@ -249,7 +247,7 @@ def G_main(
     with tf.control_dependencies(deps):
         images_out = components.synthesis.get_output_for(dlatents, is_training=is_training, force_clean_graph=is_template_graph, **kwargs)
 
-        print( images_out )
+        print( "G_main", images_out )
 
     # Return requested outputs.
     images_out = tf.identity(images_out, name='images_out')
