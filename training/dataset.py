@@ -198,7 +198,6 @@ class TFRecordDataset:
             
 
             self._tf_iterator = tf.data.Iterator.from_structure(self._tf_datasets[0].output_types, self._tf_datasets[0].output_shapes)
-            print(self._tf_datasets[0].output_types, self._tf_datasets[0].output_shapes)
             self._tf_init_ops = {lod: self._tf_iterator.make_initializer(dset) for lod, dset in self._tf_datasets.items()}
 
     def close(self):
@@ -213,6 +212,7 @@ class TFRecordDataset:
             pdb.set_trace()
             self._tf_init_ops[lod].run(feed_dict = {self._tf_minibatch_in: minibatch_size})
             # self._tf_init_ops[lod].run()
+            print(self._tf_datasets[lod].output_types, self._tf_datasets[lod].output_shapes)
             self._cur_minibatch = minibatch_size
             self._cur_lod = lod
 
