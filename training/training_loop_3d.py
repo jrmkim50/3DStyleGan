@@ -36,6 +36,7 @@ def process_reals(x, labels, lod, mirror_augment, drange_data, drange_net):
             x = tf.where(tf.random_uniform([tf.shape(x)[0]]) < 0.5, x, tf.reverse(x, [2]))
     with tf.name_scope('FadeLOD'): # Smooth crossfade between consecutive levels-of-detail.
         s = tf.shape(x)
+        print("====== PROCESS REALS =======", s.eval())
         y = tf.reshape(x, [-1, s[1], s[2]//2, 2, s[3]//2, 2, s[4]//2, 2])
         y = tf.reduce_mean(y, axis=[3, 5, 7], keepdims=True)
         y = tf.tile(y, [1, 1, 1, 2, 1, 2, 1, 2])
