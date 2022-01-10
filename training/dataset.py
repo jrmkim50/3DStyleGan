@@ -192,7 +192,6 @@ class TFRecordDataset:
                 if prefetch_mb > 0:
                     dset = dset.prefetch(((prefetch_mb << 20) - 1) // bytes_per_item + 1)
                 dset = dset.batch(self._tf_minibatch_in)
-                print("============= dataset.py ==============", dset.output_shapes)
              
                 self._tf_datasets[tfr_lod] = dset
             
