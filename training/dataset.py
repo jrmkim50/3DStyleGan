@@ -212,7 +212,6 @@ class TFRecordDataset:
             pdb.set_trace()
             self._tf_init_ops[lod].run(feed_dict = {self._tf_minibatch_in: minibatch_size})
             # self._tf_init_ops[lod].run()
-            print(self._tf_datasets[lod].output_types, self._tf_datasets[lod].output_shapes)
             self._cur_minibatch = minibatch_size
             self._cur_lod = lod
 
