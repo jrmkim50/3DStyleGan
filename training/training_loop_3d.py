@@ -219,7 +219,6 @@ def training_loop(
 
     # Build training graph for each GPU.
     data_fetch_ops = []
-    pdb.set_trace()
     for gpu in range(num_gpus):
         with tf.name_scope('GPU%d' % gpu), tf.device('/gpu:%d' % gpu):
 
