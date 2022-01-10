@@ -184,10 +184,11 @@ def training_loop(
     # Print layers and generate initial image snapshot.
     G.print_layers(); D.print_layers()
     sched = training_schedule(cur_nimg=total_kimg*1000, training_set=training_set, **sched_args)
-    grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
-    grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
+    # grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
+    # grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
 
-    misc.save_3d_image_grid(grid_fakes, dnnlib.make_run_dir_path('fakes_init.png'), drange=drange_net, grid_size=grid_size)
+    # misc.save_3d_image_grid(grid_fakes, dnnlib.make_run_dir_path('fakes_init.png'), drange=drange_net, grid_size=grid_size)
+
 
     # Setup training inputs.
     print('Building TensorFlow graph...')
@@ -230,6 +231,7 @@ def training_loop(
             # Fetch training data via temporary variables.
             with tf.name_scope('DataFetch'):
                 sched = training_schedule(cur_nimg=int(resume_kimg*1000), training_set=training_set, **sched_args)
+                training_set.configure(sched.minibatch_gpu, sched.lod)
                 reals_var = tf.Variable(name='reals', trainable=False, initial_value=tf.cast( tf.zeros([sched.minibatch_gpu] + training_set.shape), tf.float32 ), dtype=tf.float32)
                 labels_var = tf.Variable(name='labels', trainable=False, initial_value=tf.zeros([sched.minibatch_gpu, training_set.label_size]))
                 reals_write, labels_write = training_set.get_minibatch_tf()
