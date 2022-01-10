@@ -204,6 +204,7 @@ class TFRecordDataset:
 
     # Use the given minibatch size and level-of-detail for the data returned by get_minibatch_tf().
     def configure(self, minibatch_size, lod=0):
+        print("==== CONFIGURING ====", lod, minibatch_size)
         lod = int(np.floor(lod))
         assert minibatch_size >= 1 and lod in self._tf_datasets
         if self._cur_minibatch != minibatch_size or self._cur_lod != lod:
