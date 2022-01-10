@@ -146,7 +146,7 @@ class TFRecordDataset:
             self.shape = [max_shape[0], int( self.resolution / 4 * self.base_size[ 0 ] ), int( self.resolution / 4 * self.base_size[ 1 ] ), int( self.resolution / 4 * self.base_size[ 2 ] ) ]
 
             for shape in tfr_shapes:
-                print( shape.eval() )
+                print( shape )
 
             tfr_lods = [self.resolution_log2 - int(np.log2(shape[1] / self.base_size[ 0 ] * 4 )) for shape in tfr_shapes]
 
@@ -261,6 +261,7 @@ class TFRecordDataset:
         data = ex.features.feature['data'].bytes_list.value[0] # pylint: disable=no-member
         data = np.fromstring( data, np.float32 ) 
         data = data.astype( dtypeGlob_np )
+        print(shape, data.shape)
 
         return data.reshape(shape)
 
