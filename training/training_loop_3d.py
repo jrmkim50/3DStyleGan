@@ -58,7 +58,7 @@ import pdb
 def training_schedule(
     cur_nimg,
     training_set,
-    lod_initial_resolution  = 4,     # Image resolution used at the beginning. # IMPORTANT: Was None before I made it 1
+    lod_initial_resolution  = 8,     # Image resolution used at the beginning. # IMPORTANT: Was None before I made it 4
     lod_training_kimg       = 8/500,      # Thousands of real images to show before doubling the resolution.
     lod_transition_kimg     = 8/500,      # Thousands of real images to show when fading in new layers.
     minibatch_size_base     = 8,       # Global minibatch size.
