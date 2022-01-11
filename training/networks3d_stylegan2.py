@@ -174,6 +174,12 @@ def G_main(
     synthesis_func          = 'G_synthesis_stylegan2_3d_curated_real',  # Build func name for the synthesis network.
     **kwargs):                                          # Arguments for sub-networks (mapping and synthesis).
 
+    print( "======================================" )
+    print( "======        G_main Args      ======" )
+    print( "======================================" )
+    saved_args = locals()
+    print(saved_args)
+
     # Validate arguments.
     assert not is_training or not is_validation
     assert isinstance(components, dnnlib.EasyDict)
@@ -466,15 +472,11 @@ def D_stylegan2_3d_curated_real(
     base_size = [ 4, 4, 4 ], # Base Layer Size
     **_kwargs):                         # Ignore unrecognized keyword args.
 
-    print( "=================================" )
-    print( "Discriminator" )
-    print( "fmap_min" )
-    print( fmap_min )
-    print( "fmap_max" )
-    print( fmap_max )
-    print( "base_size" )
-    print( base_size )
-    print( "=================================")
+    print( "======================================" )
+    print( "======        Discrim Args      ======" )
+    print( "======================================" )
+    saved_args = locals()
+    print(saved_args)
 
     # input resolution = 160 - min resolution of 160 x 192 x 224
     # resolution_log2 = int(np.log2(resolution))

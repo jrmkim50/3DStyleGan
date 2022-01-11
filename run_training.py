@@ -130,6 +130,9 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     kwargs.submit_config = copy.deepcopy(sc)
     kwargs.submit_config.run_dir_root = result_dir
     kwargs.submit_config.run_desc = desc
+    print( "======================================" )
+    print( "======        Run_training      ======" )
+    print( "======================================" )
     print(kwargs)
 
     dnnlib.submit_run(**kwargs)

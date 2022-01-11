@@ -50,7 +50,12 @@ class Optimizer:
         loss_scaling_dec:       float           = 1.0,                      # Log2 of per-minibatch loss scaling decrement when there is an overflow.
         report_mem_usage:       bool            = False,                    # Report fine-grained memory usage statistics in TensorBoard?
         **kwargs):
-
+        print( "======================================" )
+        print( "======         Optim Args      ======" )
+        print( "======================================" )
+        saved_args = locals()
+        print(saved_args)
+        
         # Public fields.
         self.name                   = name
         self.learning_rate          = learning_rate
