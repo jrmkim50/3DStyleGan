@@ -69,7 +69,7 @@ def training_schedule(
     G_lrate_dict            = {},       # Resolution-specific overrides.
     D_lrate_base            = 0.002,    # Learning rate for the discriminator.
     D_lrate_dict            = {},       # Resolution-specific overrides.
-    lrate_rampup_kimg       = 0,        # Duration of learning rate ramp-up.
+    lrate_rampup_kimg       = 0.5,        # Duration of learning rate ramp-up.
     tick_kimg_base          = 1,        # Default interval of progress snapshots.
     tick_kimg_dict          = {4:32, 8:32, 16:16, 32:16, 64:8, 128:1}): # Resolution-specific overrides. I only have 4 -> 128 lods
     
@@ -231,7 +231,6 @@ def training_loop(
             # Fetch training data via temporary variables.
             with tf.name_scope('DataFetch'):
                 sched = training_schedule(cur_nimg=int(resume_kimg*1000), training_set=training_set, **sched_args)
-                training_set.configure(sched.minibatch_gpu, sched.lod)
                 reals_var = tf.Variable(name='reals', trainable=False, initial_value=tf.cast( tf.zeros([sched.minibatch_gpu] + training_set.shape), tf.float32 ), dtype=tf.float32)
                 labels_var = tf.Variable(name='labels', trainable=False, initial_value=tf.zeros([sched.minibatch_gpu, training_set.label_size]))
                 reals_write, labels_write = training_set.get_minibatch_tf()
