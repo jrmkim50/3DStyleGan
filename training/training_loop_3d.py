@@ -58,9 +58,9 @@ import pdb
 def training_schedule(
     cur_nimg,
     training_set,
-    lod_initial_resolution  = 4,     # Image resolution used at the beginning. # IMPORTANT: Was None before I made it 4
-    lod_training_kimg       = 8/500,      # Thousands of real images to show before doubling the resolution.
-    lod_transition_kimg     = 8/500,      # Thousands of real images to show when fading in new layers.
+    lod_initial_resolution  = None,     # Image resolution used at the beginning. # IMPORTANT: Was None before I made it 4
+    lod_training_kimg       = 1,      # Thousands of real images to show before doubling the resolution.
+    lod_transition_kimg     = 1,      # Thousands of real images to show when fading in new layers.
     minibatch_size_base     = 8,       # Global minibatch size.
     minibatch_size_dict     = {},       # Resolution-specific overrides.
     minibatch_gpu_base      = 2,        # Number of samples processed at a time by one GPU.
@@ -185,9 +185,9 @@ def training_loop(
     G.print_layers(); D.print_layers()
     sched = training_schedule(cur_nimg=total_kimg*1000, training_set=training_set, **sched_args)
     grid_latents = np.random.randn(np.prod(grid_size), *G.input_shape[1:])
-    # grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
+    grid_fakes = Gs.run(grid_latents, grid_labels, is_validation=True, minibatch_size=sched.minibatch_gpu) 
 
-    # misc.save_3d_image_grid(grid_fakes, dnnlib.make_run_dir_path('fakes_init.png'), drange=drange_net, grid_size=grid_size)
+    misc.save_3d_image_grid(grid_fakes, dnnlib.make_run_dir_path('fakes_init.png'), drange=drange_net, grid_size=grid_size)
 
 
     # Setup training inputs.
@@ -368,7 +368,7 @@ def training_loop(
                 print( "=========================================" )
                 print( "Fast Path run G_train_op" )
                 print( "=========================================" )
-                v = tflib.run([G_train_op, data_fetch_op], feed_dict)
+                tflib.run([G_train_op, data_fetch_op], feed_dict)
                 
                 if run_G_reg:
                     print( "=========================================" )
