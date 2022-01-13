@@ -14,80 +14,104 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice',
+    'Mice-Small', 'Mice-Medium', 'Mice-Large'
 ]
 
 #----------------------------------------------------------------------------
 
-def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, mirror_augment, metrics, resume_pkl):
-    train     = EasyDict(run_func_name='training.training_loop.training_loop') # Options for training loop.
-    G         = EasyDict(func_name='training.networks_stylegan2.G_main')       # Options for generator network.
-    D         = EasyDict(func_name='training.networks_stylegan2.D_stylegan2')  # Options for discriminator network.
+def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, mirror_augment, metrics, resume_pkl, bs):
+    train     = EasyDict(run_func_name='training.training_loop_3d.training_loop') # Select training loop function
+    G         = EasyDict(func_name='training.networks3d_stylegan2.G_main') # Select generator arch
+    D         = EasyDict(func_name='training.networks3d_stylegan2.D_stylegan2_3d_curated_real') # Select discriminator arch
     G_opt     = EasyDict(beta1=0.0, beta2=0.99, epsilon=1e-8)                  # Options for generator optimizer.
     D_opt     = EasyDict(beta1=0.0, beta2=0.99, epsilon=1e-8)                  # Options for discriminator optimizer.
-    G_loss    = EasyDict(func_name='training.loss.G_logistic')      # Options for generator loss.
-    D_loss    = EasyDict(func_name='training.loss.D_logistic_r1')              # Options for discriminator loss.
+    G_loss    = EasyDict(func_name='training.loss.G_logistic_ns_pathreg') # Select generator loss
+    D_loss    = EasyDict(func_name='training.loss.D_logistic') # Select discriminator loss
+
+    # Generator Params 
+    G.architecture = 'orig'
+    # Discriminator Params 
+    D.architecture = 'resnet'
+
+    dataset_args = EasyDict(tfrecord_dir=dataset) # Set tfrecord_dir
+    dataset_args.base_size = [ 2, 2, 5 ] # Base size is 2,2,5
+    # Images go from 2,2,5 -> 4,4,10 -> 8,8,20 -> 16,16,40 -> 32,32,80 -> 64,64,160
+
+    train.data_dir = data_dir
+    train.total_kimg = total_kimg
+    train.mirror_augment = mirror_augment
+    train.image_snapshot_ticks = 1
+    train.network_snapshot_ticks = 1
+
     sched     = EasyDict()                                                     # Options for TrainingSchedule.
     grid      = EasyDict(size='1080p', layout='random')                           # Options for setup_snapshot_image_grid().
     sc        = dnnlib.SubmitConfig()                                          # Options for dnnlib.submit_run().
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
-    if config_id == 'Mice':
-        train   = EasyDict(run_func_name='training.training_loop_3d.training_loop') # Select training loop function
 
-        G       = EasyDict(func_name='training.networks3d_stylegan2.G_main') # Select generator arch
-        D       = EasyDict(func_name='training.networks3d_stylegan2.D_stylegan2_3d_curated_real') # Select discriminator arch
+    if config_id == 'Mice-Small':
+        # Mapping Network Params
+        G.latent_size = 32
+        G.dlatent_size = 32
+        G.mapping_fmaps = 32
 
-        G_loss  = EasyDict(func_name='training.loss.G_logistic_ns_pathreg') # Select generator loss
-        D_loss  = EasyDict(func_name='training.loss.D_logistic') # Select discriminator loss
+        # Synthesis Network Params
+        G.fmap_min = 16
+        G.fmap_max = 16
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 16
+        D.fmap_max = 16
+        D.base_size = [ 2, 2, 5 ]
 
+        sched.G_lrate_base = sched.D_lrate_base = 0.002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {}
 
-        dataset_args = EasyDict(tfrecord_dir=dataset) # Set tfrecord_dir
-        dataset_args.base_size = [ 2, 2, 5 ] # Base size is 2,2,5
-        # Images go from 2,2,5 -> 4,4,10 -> 8,8,20 -> 16,16,40 -> 32,32,80 -> 64,64,160
-
-        # Generator Params 
-        G.architecture = 'orig'
-        
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {}
+    elif config_id == 'Mice-Medium':
         # Mapping Network Params
         G.latent_size = 64
         G.dlatent_size = 64
         G.mapping_fmaps = 64
 
         # Synthesis Network Params
-        # G.resolution = 128
         G.fmap_min = 32
         G.fmap_max = 32
         G.base_size = [ 2, 2, 5 ]
-
-        # Discriminator Params 
-        D.architecture = 'resnet'        
-        # D.resolution=128
+ 
         D.fmap_min = 32
         D.fmap_max = 32
         D.base_size = [ 2, 2, 5 ]
 
-        train.data_dir = data_dir
-        train.total_kimg = total_kimg
-        train.mirror_augment = mirror_augment
-        train.image_snapshot_ticks = 1
-        train.network_snapshot_ticks = 1
-
         sched.G_lrate_base = sched.D_lrate_base = 0.002
-
-        sched.minibatch_gpu_base = 4
+        sched.minibatch_gpu_base = bs
         sched.minibatch_gpu_dict = {}
-        # sched.minibatch_gpu_dict = {8: 8, 16: 8, 32: 8, 64: 2, 128: 2}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
         sched.minibatch_size_dict = {}
-        # sched.minibatch_size_dict = { 
-        #     8: sched.minibatch_gpu_dict[ 8 ] * num_gpus , 
-        #     16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
-        #     32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-        #     64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus, 
-        #     128: sched.minibatch_gpu_dict[ 128 ] * num_gpus
-        # }
+    elif config_id == 'Mice-Large':
+        # Mapping Network Params
+        G.latent_size = 96
+        G.dlatent_size = 96
+        G.mapping_fmaps = 96
+
+        # Synthesis Network Params
+        G.fmap_min = 64
+        G.fmap_max = 64
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 64
+        D.fmap_max = 64
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {}
     else:
         print( "Unknown Config" )
         return
@@ -110,17 +134,6 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     
     if gamma is not None:
         D_loss.gamma = gamma
-
-    # print( "======================================" )
-    # print( "======         Dataset Arg      ======" )
-    # print( "======================================" )
-    # print( dataset_args )
-
-    # print( "======================================" )
-    # print( "======         Desc             ======" )
-    # print( "======================================" )
-    # print( desc )
-    # print( "======================================" )
 
     sc.submit_target = dnnlib.SubmitTarget.LOCAL
     sc.local.do_not_copy_source_files = True
@@ -187,6 +200,7 @@ def main():
     parser.add_argument('--mirror-augment', help='Mirror augment (default: %(default)s)', default=False, metavar='BOOL', type=_str_to_bool)
     parser.add_argument('--metrics', help='Comma-separated list of metrics or "none" (default: %(default)s)', default='mmd_test', type=_parse_comma_sep)
     parser.add_argument('--resume-pkl', help='Initialise training from a pre-trained network, as .pkl (default: %(default)s)', default=None)
+    parser.add_argument('--bs', help='Default batch size', default=4)
 
     args = parser.parse_args()
 
