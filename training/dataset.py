@@ -20,7 +20,6 @@ import dnnlib.tflib as tflib
 dtypeGlob = tf.float16 
 dtypeGlob_np = np.float16
 
-import pdb
 
 class TFRecordDataset:
     def __init__(self,

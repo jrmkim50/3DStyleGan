@@ -53,7 +53,6 @@ def process_reals(x, labels, lod, mirror_augment, drange_data, drange_net):
 
 #----------------------------------------------------------------------------
 # Evaluate time-varying training parameters.
-import pdb
 
 def training_schedule(
     cur_nimg,
