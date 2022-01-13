@@ -200,7 +200,7 @@ def main():
     parser.add_argument('--mirror-augment', help='Mirror augment (default: %(default)s)', default=False, metavar='BOOL', type=_str_to_bool)
     parser.add_argument('--metrics', help='Comma-separated list of metrics or "none" (default: %(default)s)', default='mmd_test', type=_parse_comma_sep)
     parser.add_argument('--resume-pkl', help='Initialise training from a pre-trained network, as .pkl (default: %(default)s)', default=None)
-    parser.add_argument('--bs', help='Default batch size', default=4)
+    parser.add_argument('--bs', help='Default batch size', default=4, type=int)
 
     args = parser.parse_args()
 
