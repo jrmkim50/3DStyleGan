@@ -318,7 +318,7 @@ def convert_3d_images_to_uint8(images, drange=[-1,1], nchwd_to_nhwdc=False, shri
         images = tf.nn.avg_pool(images, ksize=ksize, strides=ksize, padding="VALID", data_format="NCHWD")
     if nchwd_to_nhwdc:
         images = tf.transpose(images, [0, 2, 3, 4, 1])
-    # scale = 255 / (drange[1] - drange[0])
-    # images = ( images - drange[ 0 ] ) * scale + 0.5
+    scale = 1 / (drange[1] - drange[0])
+    images = ( images - drange[ 0 ] ) * scale
     # return tf.saturate_cast(images, tf.uint8)
     return images
