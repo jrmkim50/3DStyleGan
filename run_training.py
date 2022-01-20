@@ -14,7 +14,7 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice-Small', 'Mice-Medium', 'Mice-Large'
+    'Mice-Small', 'Mice-Medium', 'Mice-Large', 'Mice-X-Large'
 ]
 
 #----------------------------------------------------------------------------
@@ -104,6 +104,27 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
  
         D.fmap_min = 64
         D.fmap_max = 64
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {}
+    elif config_id == 'Mice-X-Large':
+        # Mapping Network Params
+        G.latent_size = 96
+        G.dlatent_size = 96
+        G.mapping_fmaps = 96
+
+        # Synthesis Network Params
+        G.fmap_min = 96
+        G.fmap_max = 96
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 96
+        D.fmap_max = 96
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
