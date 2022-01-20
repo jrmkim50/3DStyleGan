@@ -328,7 +328,7 @@ def training_loop(
         sched = training_schedule(cur_nimg=cur_nimg, training_set=training_set, **sched_args)
         assert sched.minibatch_size % (sched.minibatch_gpu * num_gpus) == 0
 
-        print("====== SCHED LOG ======", sched)
+        print("====== SCHED LOG ======", sched, minibatch_repeats)
         training_set.configure(sched.minibatch_gpu, sched.lod)
         if reset_opt_for_new_lod:
             if np.floor(sched.lod) != np.floor(prev_lod) or np.ceil(sched.lod) != np.ceil(prev_lod):
