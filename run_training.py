@@ -77,12 +77,12 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         G.mapping_fmaps = 64
 
         # Synthesis Network Params
-        G.fmap_min = 32
-        G.fmap_max = 32
+        G.fmap_min = 64
+        G.fmap_max = 64
         G.base_size = [ 2, 2, 5 ]
  
-        D.fmap_min = 32
-        D.fmap_max = 32
+        D.fmap_min = 64
+        D.fmap_max = 64
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
