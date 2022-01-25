@@ -14,7 +14,7 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice-Small', 'Mice-Medium', 'Mice-Large', 'Mice-X-Large', 'Mice-Small-Large-Fmap'
+    'Mice-Original', 'Mice-Medium', 'Mice-Large', 'Mice-X-Large', 'Mice-Small-Large-Fmap'
 ]
 
 #----------------------------------------------------------------------------
@@ -49,19 +49,19 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
 
-    if config_id == 'Mice-Small':
+    if config_id == 'Mice-Original':
         # Mapping Network Params
-        G.latent_size = 32
-        G.dlatent_size = 32
-        G.mapping_fmaps = 32
+        G.latent_size = 24
+        G.dlatent_size = 24
+        G.mapping_fmaps = 96
 
         # Synthesis Network Params
-        G.fmap_min = 16
-        G.fmap_max = 16
+        G.fmap_min = 48
+        G.fmap_max = 48
         G.base_size = [ 2, 2, 5 ]
  
-        D.fmap_min = 16
-        D.fmap_max = 16
+        D.fmap_min = 48
+        D.fmap_max = 48
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
@@ -72,9 +72,9 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         sched.minibatch_size_dict = {}
     elif config_id == 'Mice-Small-Large-Fmap':
         # Mapping Network Params
-        G.latent_size = 32
-        G.dlatent_size = 32
-        G.mapping_fmaps = 32
+        G.latent_size = 24
+        G.dlatent_size = 24
+        G.mapping_fmaps = 96
 
         # Synthesis Network Params
         G.fmap_min = 64
