@@ -34,7 +34,13 @@ class TFRecordDataset:
         buffer_mb       = 256,      # Read buffer size (megabytes).
         num_threads     = 2,        # Number of concurrent threads.
         base_size = [ 5, 6, 7 ]     # Size of Base Layer
-        ):       
+        ):  
+
+        print( "======================================" )
+        print( "======        DATASET Args      ======" )
+        print( "======================================" )
+        saved_args = locals()
+        print(saved_args)     
 
         self.tfrecord_dir       = tfrecord_dir
         self.resolution         = None
