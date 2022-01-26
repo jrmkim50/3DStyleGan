@@ -66,10 +66,16 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {}
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
     elif config_id == 'Mice-Small-Large-Fmap':
         # Mapping Network Params
         G.latent_size = 24
@@ -87,10 +93,16 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {}
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
     elif config_id == 'Mice-Medium':
         # Mapping Network Params
         G.latent_size = 64
@@ -108,10 +120,16 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {}
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
     elif config_id == 'Mice-Large':
         # Mapping Network Params
         G.latent_size = 96
@@ -129,10 +147,16 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {}
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
     elif config_id == 'Mice-X-Large':
         # Mapping Network Params
         G.latent_size = 96
@@ -150,10 +174,16 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {}
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
     else:
         print( "Unknown Config" )
         return
