@@ -14,7 +14,8 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice-Original', 'Mice-Medium', 'Mice-Large', 'Mice-X-Large', 'Mice-Small-Large-Fmap'
+    'Mice-Latent', 'Mice-Original', 'Mice-Medium', 'Mice-Large', 
+    'Mice-X-Large', 'Mice-Small-Large-Fmap'
 ]
 
 #----------------------------------------------------------------------------
@@ -49,7 +50,34 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
 
-    if config_id == 'Mice-Original':
+    if config_id == 'Mice-Latent':
+        # Mapping Network Params
+        G.latent_size = 1536
+        G.dlatent_size = 1536
+        G.mapping_fmaps = 96
+
+        # Synthesis Network Params
+        G.fmap_min = 48
+        G.fmap_max = 48
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 48
+        D.fmap_max = 48
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {4: 64, 8: 32, 16: 16, 32: 16, 64: 4}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
+    elif config_id == 'Mice-Original':
         # Mapping Network Params
         G.latent_size = 24
         G.dlatent_size = 24
