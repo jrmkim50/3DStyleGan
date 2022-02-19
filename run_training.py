@@ -41,8 +41,8 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     train.data_dir = data_dir
     train.total_kimg = total_kimg
     train.mirror_augment = mirror_augment
-    train.image_snapshot_ticks = 20
-    train.network_snapshot_ticks = 20
+    train.image_snapshot_ticks = 50
+    train.network_snapshot_ticks = 50
 
     sched     = EasyDict()                                                     # Options for TrainingSchedule.
     grid      = EasyDict(size='1080p', layout='random')                           # Options for setup_snapshot_image_grid().
@@ -57,12 +57,12 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
-        G.fmap_min = 48
-        G.fmap_max = 48
+        G.fmap_min = 96
+        G.fmap_max = 96
         G.base_size = [ 2, 2, 5 ]
  
-        D.fmap_min = 48
-        D.fmap_max = 48
+        D.fmap_min = 96
+        D.fmap_max = 96
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
