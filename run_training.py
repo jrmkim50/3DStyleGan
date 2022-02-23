@@ -14,8 +14,8 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice-Latent', 'Mice-Original', 'Mice-Medium', 'Mice-Large', 
-    'Mice-X-Large', 'Mice-Small-Large-Fmap'
+    'Mice-Regular', 'Mice-Slow', 'Mice-Fast', 'Mice-Big-Regular', 
+    'Mice-Big-Slow', 'Mice-Big-Fast'
 ]
 
 #----------------------------------------------------------------------------
@@ -50,7 +50,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
 
-    if config_id == 'Mice-Latent':
+    if config_id == 'Mice-Regular':
         # Mapping Network Params
         G.latent_size = 1536
         G.dlatent_size = 1536
@@ -67,7 +67,7 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 64, 8: 32, 16: 16, 32: 16, 64: 4}
+        sched.minibatch_gpu_dict = {4: 64, 8: 32, 16: 16, 32: 4, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
         sched.minibatch_size_dict = {
@@ -77,118 +77,10 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
             32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
             64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
         }
-    elif config_id == 'Mice-Original':
+    elif config_id == 'Mice-Slow':
         # Mapping Network Params
-        G.latent_size = 24
-        G.dlatent_size = 24
-        G.mapping_fmaps = 96
-
-        # Synthesis Network Params
-        G.fmap_min = 48
-        G.fmap_max = 48
-        G.base_size = [ 2, 2, 5 ]
- 
-        D.fmap_min = 48
-        D.fmap_max = 48
-        D.base_size = [ 2, 2, 5 ]
-
-        sched.G_lrate_base = sched.D_lrate_base = 0.002
-        sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
-
-        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {
-            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
-            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
-            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
-            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
-        }
-    elif config_id == 'Mice-Small-Large-Fmap':
-        # Mapping Network Params
-        G.latent_size = 24
-        G.dlatent_size = 24
-        G.mapping_fmaps = 96
-
-        # Synthesis Network Params
-        G.fmap_min = 64
-        G.fmap_max = 64
-        G.base_size = [ 2, 2, 5 ]
- 
-        D.fmap_min = 64
-        D.fmap_max = 64
-        D.base_size = [ 2, 2, 5 ]
-
-        sched.G_lrate_base = sched.D_lrate_base = 0.002
-        sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
-
-        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {
-            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
-            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
-            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
-            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
-        }
-    elif config_id == 'Mice-Medium':
-        # Mapping Network Params
-        G.latent_size = 64
-        G.dlatent_size = 64
-        G.mapping_fmaps = 64
-
-        # Synthesis Network Params
-        G.fmap_min = 64
-        G.fmap_max = 64
-        G.base_size = [ 2, 2, 5 ]
- 
-        D.fmap_min = 64
-        D.fmap_max = 64
-        D.base_size = [ 2, 2, 5 ]
-
-        sched.G_lrate_base = sched.D_lrate_base = 0.002
-        sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
-
-        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {
-            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
-            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
-            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
-            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
-        }
-    elif config_id == 'Mice-Large':
-        # Mapping Network Params
-        G.latent_size = 96
-        G.dlatent_size = 96
-        G.mapping_fmaps = 96
-
-        # Synthesis Network Params
-        G.fmap_min = 64
-        G.fmap_max = 64
-        G.base_size = [ 2, 2, 5 ]
- 
-        D.fmap_min = 64
-        D.fmap_max = 64
-        D.base_size = [ 2, 2, 5 ]
-
-        sched.G_lrate_base = sched.D_lrate_base = 0.002
-        sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
-
-        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
-        sched.minibatch_size_dict = {
-            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
-            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
-            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
-            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
-            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
-        }
-    elif config_id == 'Mice-X-Large':
-        # Mapping Network Params
-        G.latent_size = 96
-        G.dlatent_size = 96
+        G.latent_size = 1536
+        G.dlatent_size = 1536
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
@@ -200,9 +92,117 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         D.fmap_max = 96
         D.base_size = [ 2, 2, 5 ]
 
+        sched.G_lrate_base = sched.D_lrate_base = 0.0002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
+    elif config_id == 'Mice-Fast':
+        # Mapping Network Params
+        G.latent_size = 1536
+        G.dlatent_size = 1536
+        G.mapping_fmaps = 96
+
+        # Synthesis Network Params
+        G.fmap_min = 96
+        G.fmap_max = 96
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 96
+        D.fmap_max = 96
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.01
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
+    elif config_id == 'Mice-Big-Regular':
+        # Mapping Network Params
+        G.latent_size = 1536
+        G.dlatent_size = 1536
+        G.mapping_fmaps = 128
+
+        # Synthesis Network Params
+        G.fmap_min = 128
+        G.fmap_max = 128
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 128
+        D.fmap_max = 128
+        D.base_size = [ 2, 2, 5 ]
+
         sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
+    elif config_id == 'Mice-Big-Slow':
+        # Mapping Network Params
+        G.latent_size = 1536
+        G.dlatent_size = 1536
+        G.mapping_fmaps = 128
+
+        # Synthesis Network Params
+        G.fmap_min = 128
+        G.fmap_max = 128
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 128
+        D.fmap_max = 128
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.0002
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
+
+        sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
+        sched.minibatch_size_dict = {
+            4: sched.minibatch_gpu_dict[ 4 ] * num_gpus,
+            8: sched.minibatch_gpu_dict[ 8 ] * num_gpus, 
+            16:  sched.minibatch_gpu_dict[ 16 ] * num_gpus, 
+            32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
+            64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
+        }
+    elif config_id == 'Mice-Big-Fast':
+        # Mapping Network Params
+        G.latent_size = 1536
+        G.dlatent_size = 1536
+        G.mapping_fmaps = 128
+
+        # Synthesis Network Params
+        G.fmap_min = 128
+        G.fmap_max = 128
+        G.base_size = [ 2, 2, 5 ]
+ 
+        D.fmap_min = 128
+        D.fmap_max = 128
+        D.base_size = [ 2, 2, 5 ]
+
+        sched.G_lrate_base = sched.D_lrate_base = 0.01
+        sched.minibatch_gpu_base = bs
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
         sched.minibatch_size_dict = {
