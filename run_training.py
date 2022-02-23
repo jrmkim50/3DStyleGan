@@ -49,6 +49,8 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     sc        = dnnlib.SubmitConfig()                                          # Options for dnnlib.submit_run().
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
 
+    sc.run_dir = "/oak/stanford/groups/cslevin/jk23541/results"
+
 
     if config_id == 'Mice-Regular':
         # Mapping Network Params
