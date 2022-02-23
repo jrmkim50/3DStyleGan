@@ -68,7 +68,7 @@ def training_schedule(
     G_lrate_dict            = {},       # Resolution-specific overrides.
     D_lrate_base            = 0.002,    # Learning rate for the discriminator.
     D_lrate_dict            = {},       # Resolution-specific overrides.
-    lrate_rampup_kimg       = 1,        # Duration of learning rate ramp-up.
+    lrate_rampup_kimg       = 5,        # Duration of learning rate ramp-up.
     tick_kimg_base          = 1,        # Default interval of progress snapshots.
     tick_kimg_dict          = {4:32, 8:32, 16:16, 32:16, 64:1, 128:1}): # Resolution-specific overrides. I only have 4 -> 128 lods
     
