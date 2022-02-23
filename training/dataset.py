@@ -189,8 +189,8 @@ class TFRecordDataset:
                 bytes_per_item = np.prod(tfr_shape) * np.dtype(self.dtype).itemsize
                 
                 if shuffle_mb > 0:
-                    # dset = dset.shuffle(((shuffle_mb << 20) - 1) // bytes_per_item + 1)
-                    dset = dset.shuffle(100)
+                    dset = dset.shuffle(((shuffle_mb << 20) - 1) // bytes_per_item + 1)
+                    # dset = dset.shuffle(100)
                 if repeat:
                     print( "=================================================" )
                     print( " Dataset Repeated" )
