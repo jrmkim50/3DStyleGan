@@ -161,6 +161,7 @@ def training_loop(
     # training_set = training_set.repeat()
 
     grid_size, grid_reals, grid_labels = misc.setup_snapshot_image_grid(training_set, **grid_args)
+    print("SUBMIT CONFIG", dnnlib.submit_config)
     misc.save_image_grid(grid_reals, dnnlib.make_run_dir_path('reals.png'), drange=training_set.dynamic_range, grid_size=grid_size)
 
     min_res = np.min( training_set.shape[ 1: ] )
