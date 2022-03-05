@@ -54,19 +54,19 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
     if config_id == 'Mice-Regular':
         # Mapping Network Params
-        G.latent_size = 96
-        G.dlatent_size = 96
+        G.latent_size = 1024
+        G.dlatent_size = 1024
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
         G.fmap_base = 4096
         G.fmap_min = 0
-        G.fmap_max = 128
+        G.fmap_max = 96
         G.base_size = [ 2, 2, 5 ]
  
         D.fmap_base = 4096
         D.fmap_min = 0
-        D.fmap_max = 128
+        D.fmap_max = 96
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
