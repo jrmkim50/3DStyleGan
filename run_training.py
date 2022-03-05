@@ -54,8 +54,8 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
 
     if config_id == 'Mice-Regular':
         # Mapping Network Params
-        G.latent_size = 1024
-        G.dlatent_size = 1024
+        G.latent_size = 96
+        G.dlatent_size = 96
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
