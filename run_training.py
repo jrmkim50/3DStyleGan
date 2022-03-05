@@ -14,7 +14,7 @@ from metrics.metric_defaults import metric_defaults
 
 #----------------------------------------------------------------------------
 _valid_configs = [
-    'Mice-Regular', 'Mice-Slow', 'Mice-Fast', 'Mice-Big-Regular', 
+    'Mice-Regular', 'Mice-Regular-R1', 'Mice-Fast', 'Mice-Big-Regular', 
     'Mice-Big-Slow', 'Mice-Big-Fast'
 ]
 
@@ -62,12 +62,12 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
         # Synthesis Network Params
         G.fmap_base = 4096
         G.fmap_min = 0
-        G.fmap_max = 256
+        G.fmap_max = 128
         G.base_size = [ 2, 2, 5 ]
  
         D.fmap_base = 4096
         D.fmap_min = 0
-        D.fmap_max = 256
+        D.fmap_max = 128
         D.base_size = [ 2, 2, 5 ]
 
         sched.G_lrate_base = sched.D_lrate_base = 0.002
@@ -82,24 +82,27 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
             32:  sched.minibatch_gpu_dict[ 32 ] * num_gpus, 
             64:  sched.minibatch_gpu_dict[ 64 ] * num_gpus
         }
-    elif config_id == 'Mice-Slow':
+    elif config_id == 'Mice-Regular-R1':
+        D_loss    = EasyDict(func_name='training.loss.D_logistic_r1')
         # Mapping Network Params
-        G.latent_size = 1536
-        G.dlatent_size = 1536
+        G.latent_size = 1024
+        G.dlatent_size = 1024
         G.mapping_fmaps = 96
 
         # Synthesis Network Params
-        G.fmap_min = 96
-        G.fmap_max = 96
+        G.fmap_base = 4096
+        G.fmap_min = 0
+        G.fmap_max = 128
         G.base_size = [ 2, 2, 5 ]
  
-        D.fmap_min = 96
-        D.fmap_max = 96
+        D.fmap_base = 4096
+        D.fmap_min = 0
+        D.fmap_max = 128
         D.base_size = [ 2, 2, 5 ]
 
-        sched.G_lrate_base = sched.D_lrate_base = 0.0002
+        sched.G_lrate_base = sched.D_lrate_base = 0.002
         sched.minibatch_gpu_base = bs
-        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 4, 64: 4}
+        sched.minibatch_gpu_dict = {4: 32, 8: 32, 16: 16, 32: 8, 64: 4}
 
         sched.minibatch_size_base = sched.minibatch_gpu_base * num_gpus
         sched.minibatch_size_dict = {
