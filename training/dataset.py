@@ -29,8 +29,8 @@ class TFRecordDataset:
         max_label_size  = 0,        # 0 = no labels, 'full' = full labels, <int> = N first label components.
         max_images      = None,     # Maximum number of images to use, None = use all images.
         repeat          = True,     # Repeat dataset indefinitely?
-        shuffle_mb      = 4096,     # Shuffle data within specified window (megabytes), 0 = disable shuffling.
-        prefetch_mb     = 2048,     # Amount of data to prefetch (megabytes), 0 = disable prefetching.
+        shuffle_mb      = 2048,     # Shuffle data within specified window (megabytes), 0 = disable shuffling.
+        prefetch_mb     = 1024,     # Amount of data to prefetch (megabytes), 0 = disable prefetching.
         buffer_mb       = 256,      # Read buffer size (megabytes).
         num_threads     = 2,        # Number of concurrent threads.
         base_size = [ 5, 6, 7 ]     # Size of Base Layer
