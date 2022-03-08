@@ -190,7 +190,7 @@ class TFRecordDataset:
                 
                 if shuffle_mb > 0:
                     # dset = dset.shuffle(((shuffle_mb << 20) - 1) // bytes_per_item + 1)
-                    dset = dset.shuffle(100)
+                    dset = dset.shuffle(40)
                 if repeat:
                     print( "=================================================" )
                     print( " Dataset Repeated" )
