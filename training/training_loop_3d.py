@@ -164,7 +164,7 @@ def training_loop(
 
     min_res = np.min( training_set.shape[ 1: ] )
 
-    print( min_res, "GPU: " + gpu_num ) 
+    print( min_res, "GPU: " + str(gpu_num) ) 
     
     # Construct or load networks.
     with tf.device(f'/gpu:{gpu_num}'):
