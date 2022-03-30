@@ -148,7 +148,7 @@ def training_loop(
     resume_pkl              = None,     # Network pickle to resume training from, None = train from scratch.
     resume_kimg             = 0.0,      # Assumed training progress at the beginning. Affects reporting and training schedule.
     resume_time             = 0.0,      # Assumed wallclock time at the beginning. Affects reporting.
-    resume_with_new_nets    = False, gpu_num = 0):   # Construct new networks according to G_args and D_args before resuming training?
+    resume_with_new_nets    = False):   # Construct new networks according to G_args and D_args before resuming training?
 
     # Initialize dnnlib and TensorFlow.
     tflib.init_tf(tf_config)
@@ -164,10 +164,10 @@ def training_loop(
 
     min_res = np.min( training_set.shape[ 1: ] )
 
-    print( min_res, "GPU: " + str(gpu_num) ) 
+    print( min_res ) 
     
     # Construct or load networks.
-    with tf.device(f'/gpu:{gpu_num}'):
+    with tf.device('/gpu:0'):
         if resume_pkl is None or resume_with_new_nets:
             print('Constructing networks...')
             G = tflib.Network('G', num_channels=training_set.shape[0], resolution=min_res, label_size=training_set.label_size, **G_args)
@@ -220,7 +220,7 @@ def training_loop(
     # Build training graph for each GPU.
     data_fetch_ops = []
     for gpu in range(num_gpus):
-        with tf.name_scope('GPU%d' % (gpu+gpu_num)), tf.device('/gpu:%d' % (gpu+gpu_num)):
+        with tf.name_scope('GPU%d' % gpu), tf.device('/gpu:%d' % gpu):
 
             # Create GPU-specific shadow copies of G and D.
             G_gpu = G if gpu == 0 else G.clone(G.name + '_shadow')

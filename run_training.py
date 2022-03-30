@@ -19,7 +19,7 @@ _valid_configs = [
 
 #----------------------------------------------------------------------------
 
-def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, mirror_augment, metrics, resume_pkl, bs, gpu):
+def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, mirror_augment, metrics, resume_pkl, bs):
     train     = EasyDict(run_func_name='training.training_loop_3d.training_loop') # Select training loop function
     G         = EasyDict(func_name='training.networks3d_stylegan2.G_main') # Select generator arch
     D         = EasyDict(func_name='training.networks3d_stylegan2.D_stylegan2_3d_curated_real') # Select discriminator arch
@@ -51,7 +51,6 @@ def run(dataset, data_dir, result_dir, config_id, num_gpus, total_kimg, gamma, m
     grid      = EasyDict(size='1080p', layout='random')                           # Options for setup_snapshot_image_grid().
     sc        = dnnlib.SubmitConfig()                                          # Options for dnnlib.submit_run().
     tf_config = {'rnd.np_random_seed': 100}                                   # Options for tflib.init_tf().
-    train.gpu_num = gpu
 
     if config_id == 'Mice-Regular':
         # Mapping Network Params
@@ -200,7 +199,6 @@ def main():
     parser.add_argument('--metrics', help='Comma-separated list of metrics or "none" (default: %(default)s)', default='mmd_test', type=_parse_comma_sep)
     parser.add_argument('--resume-pkl', help='Initialise training from a pre-trained network, as .pkl (default: %(default)s)', default=None)
     parser.add_argument('--bs', help='Default batch size', default=4, type=int)
-    parser.add_argument('--gpu', help='Default batch size', default=0, type=int)
 
     args = parser.parse_args()
 
