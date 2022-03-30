@@ -179,26 +179,26 @@ class TFRecordDataset:
                 if tfr_lod < 0:
                     continue
 
-                dset = tf.data.TFRecordDataset(tfr_file, compression_type='', buffer_size=buffer_mb<<20)
-                # dset = tf.data.TFRecordDataset(tfr_file, compression_type='')
+                # dset = tf.data.TFRecordDataset(tfr_file, compression_type='', buffer_size=buffer_mb<<20)
+                dset = tf.data.TFRecordDataset(tfr_file, compression_type='')
 
                 if max_images is not None:
                     dset = dset.take(max_images)
                 dset = dset.map(self.parse_tfrecord_tf, num_parallel_calls=num_threads)
                 dset = tf.data.Dataset.zip((dset, self._tf_labels_dataset))
-                bytes_per_item = np.prod(tfr_shape) * np.dtype(self.dtype).itemsize
+                # bytes_per_item = np.prod(tfr_shape) * np.dtype(self.dtype).itemsize
                 
                 if shuffle_mb > 0:
-                    dset = dset.shuffle(((shuffle_mb << 20) - 1) // bytes_per_item + 1)
-                    # dset = dset.shuffle(40)
+                    # dset = dset.shuffle(((shuffle_mb << 20) - 1) // bytes_per_item + 1)
+                    dset = dset.shuffle(40)
                 if repeat:
                     print( "=================================================" )
                     print( " Dataset Repeated" )
                     print( "=================================================" )
                     dset = dset.repeat()
                 if prefetch_mb > 0:
-                    dset = dset.prefetch(((prefetch_mb << 20) - 1) // bytes_per_item + 1)
-                    # dset = dset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
+                    # dset = dset.prefetch(((prefetch_mb << 20) - 1) // bytes_per_item + 1)
+                    dset = dset.prefetch(buffer_size=tf.data.experimental.AUTOTUNE)
                 dset = dset.batch(self._tf_minibatch_in)
              
                 self._tf_datasets[tfr_lod] = dset
