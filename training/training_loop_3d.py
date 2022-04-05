@@ -24,6 +24,9 @@ import sys
 
 dtypeGlob=tf.float16
 
+import os
+GPU_NUM = os.environ['GPU'] if os.environ['HOME'] else 0
+
 
 #----------------------------------------------------------------------------
 # Just-in-time processing of training images before feeding them to the networks.
@@ -167,7 +170,7 @@ def training_loop(
     print( min_res ) 
     
     # Construct or load networks.
-    with tf.device('/gpu:0'):
+    with tf.device(f'/gpu:{GPU_NUM}'):
         if resume_pkl is None or resume_with_new_nets:
             print('Constructing networks...')
             G = tflib.Network('G', num_channels=training_set.shape[0], resolution=min_res, label_size=training_set.label_size, **G_args)
@@ -220,7 +223,7 @@ def training_loop(
     # Build training graph for each GPU.
     data_fetch_ops = []
     for gpu in range(num_gpus):
-        with tf.name_scope('GPU%d' % gpu), tf.device('/gpu:%d' % gpu):
+        with tf.name_scope('GPU%d' % (gpu+GPU_NUM)), tf.device('/gpu:%d' % (gpu+GPU_NUM)):
 
             # Create GPU-specific shadow copies of G and D.
             G_gpu = G if gpu == 0 else G.clone(G.name + '_shadow')
