@@ -223,7 +223,7 @@ def training_loop(
     # Build training graph for each GPU.
     data_fetch_ops = []
     for gpu in range(num_gpus):
-        with tf.name_scope('GPU%d' % (gpu+GPU_NUM)), tf.device('/gpu:%d' % (gpu+GPU_NUM)):
+        with tf.name_scope('GPU%d' % str(gpu+GPU_NUM)), tf.device('/gpu:%d' % str(gpu+GPU_NUM)):
 
             # Create GPU-specific shadow copies of G and D.
             G_gpu = G if gpu == 0 else G.clone(G.name + '_shadow')
