@@ -35,7 +35,7 @@ def import_handler(handler_func):
 
 
 import os
-GPU_NUM = os.environ['GPU'] if os.environ['HOME'] else 0
+GPU_NUM = os.environ['GPU'] if os.environ['GPU'] else 0
 
 class Network:
     """Generic network abstraction.

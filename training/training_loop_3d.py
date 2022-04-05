@@ -25,7 +25,7 @@ import sys
 dtypeGlob=tf.float16
 
 import os
-GPU_NUM = os.environ['GPU'] if os.environ['HOME'] else 0
+GPU_NUM = os.environ['GPU'] if os.environ['GPU'] else 0
 
 
 #----------------------------------------------------------------------------
